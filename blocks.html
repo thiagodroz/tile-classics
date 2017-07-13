@@ -9,8 +9,8 @@
     <script>
         var ballX = 75;
         var ballY = 75;
-        var ballSpeedX = 6;
-        var ballSpeedY = 6;
+        var ballSpeedX = 5;
+        var ballSpeedY = 7;
 
         const PADDLE_WIDTH = 100;
         const PADDLE_THICKNESS = 10;
@@ -77,7 +77,12 @@
                 ballY < paddleBottomEdgeY && //above bottom of paddle
                 ballX > paddleLeftEdgeX && //right of the left side of paddle
                 ballX < paddleRightEdgeX) { //left of the right side of paddle
-                ballSpeedY *= -1;
+                    ballSpeedY *= -1;
+
+                    var centerOfPaddleX = paddleX + PADDLE_WIDTH / 2;
+                    var ballDistFromPaddleCenterX = ballX = centerOfPaddleX;
+
+                    ballSpeedX = ballDistFromPaddleCenterX * 0.35;
             }
         }
 
