@@ -12,6 +12,14 @@
         var ballSpeedX = 5;
         var ballSpeedY = 7;
 
+        const BRICK_WIDTH = 100;
+        const BRICK_HEIGHT = 50;
+        const BRICK_COUNT = 6;
+        const BRICK_GAP = 5;
+        const BRICK_ROWS = 4;
+
+        var brickGrid = new Array(BRICK_COUNT);
+
         const PADDLE_WIDTH = 100;
         const PADDLE_THICKNESS = 10;
         const PADDLE_DIST_FROM_EDGE = 20;
@@ -32,6 +40,12 @@
             paddleX = mouseX - PADDLE_WIDTH/2;
         }
 
+        function brickReset() {
+            for (var i = 0; i < BRICK_COUNT; i++) {
+                brickGrid[i] = true;
+            }
+        }
+
         window.onload = function () {
             canvas = document.getElementById('gameCanvas');
             canvasContext = canvas.getContext('2d');
@@ -40,6 +54,8 @@
             setInterval(updateAll, 1000/framesPerSecond);
 
             canvas.addEventListener('mousemove', updateMousePosition);
+
+            brickReset();
         };
 
         function updateAll() {
@@ -90,6 +106,20 @@
             }
         }
 
+        function drawBricks() {
+            for (var eachRow = 0; eachRow < BRICK_ROWS; eachRow++) {
+                for (var i = 0; i < BRICK_COUNT; i++) {
+                    if (brickGrid[i]) {
+                        colorRect(BRICK_WIDTH * i,
+                                  BRICK_HEIGHT * eachRow,
+                                  BRICK_WIDTH - BRICK_GAP,
+                                  BRICK_HEIGHT - BRICK_GAP,
+                                  'blue');
+                    }
+                }
+            }
+        }
+
         function drawAll() {
             colorRect(0, 0, canvas.width, canvas.height, 'black');
 
@@ -98,7 +128,12 @@
             colorRect(paddleX, canvas.height - PADDLE_DIST_FROM_EDGE,
                         PADDLE_WIDTH, PADDLE_THICKNESS, 'white');
 
-            colorText(mouseX + "," + mouseY, mouseX, mouseY, 'yellow');
+            drawBricks();
+
+            var mouseBrickCol = mouseX / BRICK_WIDTH;
+            var mouseBrickRow = mouseY / BRICK_HEIGHT;
+
+            colorText(mouseBrickCol + "," + mouseBrickRow, mouseX, mouseY, 'yellow');
         }
 
         function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
