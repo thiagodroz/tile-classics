@@ -1,7 +1,11 @@
-var ballX = 75;
-var ballY = 75;
-var ballSpeedX = 5;
-var ballSpeedY = 7;
+var carPic = document.createElement("img");
+var carPicLoaded = false;
+
+var carX = 75;
+var carY = 75;
+var carAng = 0;
+var carSpeedX = 5;
+var carSpeedY = 7;
 
 const TRACK_W = 30;
 const TRACK_H = 32;
@@ -36,11 +40,11 @@ function updateMousePos(evt) {
     mouseX = evt.clientX - rect.left - root.scrollLeft;
     mouseY = evt.clientY - rect.top - root.scrollTop;
 
-    // cheat / hack to test ball in any position
-    /*ballX = mouseX;
-     ballY = mouseY;
-     ballSpeedX = 4;
-     ballSpeedY = -4;*/
+    // cheat / hack to test car in any position
+    /*carX = mouseX;
+     carY = mouseY;
+     carSpeedX = 4;
+     carSpeedY = -4;*/
 }
 
 window.onload = function() {
@@ -52,7 +56,12 @@ window.onload = function() {
 
     canvas.addEventListener('mousemove', updateMousePos);
 
-    ballReset();
+    carPic.onload = function () {
+        carPicLoaded = true;
+    };
+    carPic.src = "player1car.png";
+
+    carReset();
 };
 
 function updateAll() {
@@ -60,34 +69,35 @@ function updateAll() {
     drawAll();
 }
 
-function ballReset() {
+function carReset() {
     for (var eachRow=0; eachRow < TRACK_ROWS; eachRow++) {
         for (var eachCol = 0; eachCol < TRACK_COLS; eachCol++) {
             var arrayIndex = rowColToArrayIndex(eachCol, eachRow);
             if (trackGrid[arrayIndex] == 2) {
                 trackGrid[arrayIndex] = 0;
-                ballX = eachCol * TRACK_W + TRACK_W / 2;
-                ballY = eachRow * TRACK_H + TRACK_H / 2;
+                carX = eachCol * TRACK_W + TRACK_W / 2;
+                carY = eachRow * TRACK_H + TRACK_H / 2;
             }
         }
     }
 }
 
-function ballMove() {
-    ballX += ballSpeedX;
-    ballY += ballSpeedY;
+function carMove() {
+    // carX += carSpeedX;
+    // carY += carSpeedY;
+    carAng += 0.02;
 
-    if(ballX < 0 && ballSpeedX < 0.0) { //left
-        ballSpeedX *= -1;
+    if(carX < 0 && carSpeedX < 0.0) { //left
+        carSpeedX *= -1;
     }
-    if(ballX > canvas.width && ballSpeedX > 0.0) { // right
-        ballSpeedX *= -1;
+    if(carX > canvas.width && carSpeedX > 0.0) { // right
+        carSpeedX *= -1;
     }
-    if(ballY < 0 && ballSpeedY < 0.0) { // top
-        ballSpeedY *= -1;
+    if(carY < 0 && carSpeedY < 0.0) { // top
+        carSpeedY *= -1;
     }
-    if(ballY > canvas.height) { // bottom
-        ballReset();
+    if(carY > canvas.height) { // bottom
+        carReset();
     }
 }
 
@@ -101,50 +111,50 @@ function isTrackAtColRow(col, row) {
     }
 }
 
-function ballTrackHandling() {
-    var ballTrackCol = Math.floor(ballX / TRACK_W);
-    var ballTrackRow = Math.floor(ballY / TRACK_H);
-    var trackIndexUnderBall = rowColToArrayIndex(ballTrackCol, ballTrackRow);
+function carTrackHandling() {
+    var carTrackCol = Math.floor(carX / TRACK_W);
+    var carTrackRow = Math.floor(carY / TRACK_H);
+    var trackIndexUnderCar = rowColToArrayIndex(carTrackCol, carTrackRow);
 
-    if(ballTrackCol >= 0 && ballTrackCol < TRACK_COLS &&
-        ballTrackRow >= 0 && ballTrackRow < TRACK_ROWS) {
+    if(carTrackCol >= 0 && carTrackCol < TRACK_COLS &&
+        carTrackRow >= 0 && carTrackRow < TRACK_ROWS) {
 
-        if(isTrackAtColRow( ballTrackCol,ballTrackRow )) {
+        if(isTrackAtColRow( carTrackCol,carTrackRow )) {
             // console.log(tracksLeft);
 
-            var prevBallX = ballX - ballSpeedX;
-            var prevBallY = ballY - ballSpeedY;
-            var prevTrackCol = Math.floor(prevBallX / TRACK_W);
-            var prevTrackRow = Math.floor(prevBallY / TRACK_H);
+            var prevCarX = carX - carSpeedX;
+            var prevCarY = carY - carSpeedY;
+            var prevTrackCol = Math.floor(prevCarX / TRACK_W);
+            var prevTrackRow = Math.floor(prevCarY / TRACK_H);
 
             var bothTestsFailed = true;
 
-            if(prevTrackCol != ballTrackCol) {
-                if(isTrackAtColRow(prevTrackCol, ballTrackRow) == false) {
-                    ballSpeedX *= -1;
+            if(prevTrackCol != carTrackCol) {
+                if(isTrackAtColRow(prevTrackCol, carTrackRow) == false) {
+                    carSpeedX *= -1;
                     bothTestsFailed = false;
                 }
             }
-            if(prevTrackRow != ballTrackRow) {
-                if(isTrackAtColRow(ballTrackCol, prevTrackRow) == false) {
-                    ballSpeedY *= -1;
+            if(prevTrackRow != carTrackRow) {
+                if(isTrackAtColRow(carTrackCol, prevTrackRow) == false) {
+                    carSpeedY *= -1;
                     bothTestsFailed = false;
                 }
             }
 
-            if(bothTestsFailed) { // armpit case, prevents ball from going through
-                ballSpeedX *= -1;
-                ballSpeedY *= -1;
+            if(bothTestsFailed) { // armpit case, prevents car from going through
+                carSpeedX *= -1;
+                carSpeedY *= -1;
             }
 
         } // end of track found
     } // end of valid col and row
-} // end of ballTrackHandling func
+} // end of carTrackHandling func
 
 function moveAll() {
-    ballMove();
+    carMove();
 
-    ballTrackHandling();
+    carTrackHandling();
 }
 
 function rowColToArrayIndex(col, row) {
@@ -170,9 +180,20 @@ function drawTracks() {
 function drawAll() {
     colorRect(0,0, canvas.width,canvas.height, 'black'); // clear screen
 
-    colorCircle(ballX,ballY, 10, 'white'); // draw ball
+    //colorCircle(carX,carY, 10, 'white'); // draw car
+    if (carPicLoaded) {
+        drawBitmapCenteredWithRotation(carPic, carX, carY, carAng);
+    }
 
     drawTracks();
+}
+
+function drawBitmapCenteredWithRotation(useBitmap, atX, atY, withAng) {
+    canvasContext.save();
+    canvasContext.translate(atX, atY);
+    canvasContext.rotate(withAng);
+    canvasContext.drawImage(useBitmap, -useBitmap.width / 2, -useBitmap.height / 2);
+    canvasContext.restore();
 }
 
 function colorRect(topLeftX,topLeftY, boxWidth,boxHeight, fillColor) {
