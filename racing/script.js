@@ -4,8 +4,7 @@ var carPicLoaded = false;
 var carX = 75;
 var carY = 75;
 var carAng = 0;
-var carSpeedX = 5;
-var carSpeedY = 7;
+var carSpeed = 2;
 
 const TRACK_W = 30;
 const TRACK_H = 32;
@@ -30,6 +29,11 @@ var trackGrid = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 
 var canvas, canvasContext;
 
+const KEY_LEFT_ARROW = 37;
+const KEY_UP_ARROW = 38;
+const KEY_RIGHT_ARROW = 39;
+const KEY_DOWN_ARROW = 40;
+
 var mouseX = 0;
 var mouseY = 0;
 
@@ -39,12 +43,27 @@ function updateMousePos(evt) {
 
     mouseX = evt.clientX - rect.left - root.scrollLeft;
     mouseY = evt.clientY - rect.top - root.scrollTop;
+}
 
-    // cheat / hack to test car in any position
-    /*carX = mouseX;
-     carY = mouseY;
-     carSpeedX = 4;
-     carSpeedY = -4;*/
+function keyPressed(evt) {
+    if (evt.keyCode == KEY_LEFT_ARROW) {
+        carAng -= 0.5;
+    }
+    if (evt.keyCode == KEY_RIGHT_ARROW) {
+        carAng += 0.5;
+    }
+    if (evt.keyCode == KEY_UP_ARROW) {
+        carSpeed += 0.5;
+    }
+    if (evt.keyCode == KEY_DOWN_ARROW) {
+        carSpeed -= 0.5;
+    }
+
+    evt.preventDefault();
+}
+
+function keyReleased(evt) {
+
 }
 
 window.onload = function() {
@@ -55,6 +74,9 @@ window.onload = function() {
     setInterval(updateAll, 1000/framesPerSecond);
 
     canvas.addEventListener('mousemove', updateMousePos);
+
+    document.addEventListener('keydown', keyPressed);
+    document.addEventListener('keydown', keyReleased);
 
     carPic.onload = function () {
         carPicLoaded = true;
@@ -83,22 +105,8 @@ function carReset() {
 }
 
 function carMove() {
-    // carX += carSpeedX;
-    // carY += carSpeedY;
-    carAng += 0.02;
-
-    if(carX < 0 && carSpeedX < 0.0) { //left
-        carSpeedX *= -1;
-    }
-    if(carX > canvas.width && carSpeedX > 0.0) { // right
-        carSpeedX *= -1;
-    }
-    if(carY < 0 && carSpeedY < 0.0) { // top
-        carSpeedY *= -1;
-    }
-    if(carY > canvas.height) { // bottom
-        carReset();
-    }
+    carX += Math.cos(carAng) * carSpeed;
+    carY += Math.sin(carAng) * carSpeed;
 }
 
 function isTrackAtColRow(col, row) {
@@ -120,33 +128,7 @@ function carTrackHandling() {
         carTrackRow >= 0 && carTrackRow < TRACK_ROWS) {
 
         if(isTrackAtColRow( carTrackCol,carTrackRow )) {
-            // console.log(tracksLeft);
-
-            var prevCarX = carX - carSpeedX;
-            var prevCarY = carY - carSpeedY;
-            var prevTrackCol = Math.floor(prevCarX / TRACK_W);
-            var prevTrackRow = Math.floor(prevCarY / TRACK_H);
-
-            var bothTestsFailed = true;
-
-            if(prevTrackCol != carTrackCol) {
-                if(isTrackAtColRow(prevTrackCol, carTrackRow) == false) {
-                    carSpeedX *= -1;
-                    bothTestsFailed = false;
-                }
-            }
-            if(prevTrackRow != carTrackRow) {
-                if(isTrackAtColRow(carTrackCol, prevTrackRow) == false) {
-                    carSpeedY *= -1;
-                    bothTestsFailed = false;
-                }
-            }
-
-            if(bothTestsFailed) { // armpit case, prevents car from going through
-                carSpeedX *= -1;
-                carSpeedY *= -1;
-            }
-
+            carSpeed *= -1;
         } // end of track found
     } // end of valid col and row
 } // end of carTrackHandling func
@@ -162,7 +144,6 @@ function rowColToArrayIndex(col, row) {
 }
 
 function drawTracks() {
-
     for(var eachRow=0;eachRow<TRACK_ROWS;eachRow++) {
         for(var eachCol=0;eachCol<TRACK_COLS;eachCol++) {
 
@@ -180,7 +161,6 @@ function drawTracks() {
 function drawAll() {
     colorRect(0,0, canvas.width,canvas.height, 'black'); // clear screen
 
-    //colorCircle(carX,carY, 10, 'white'); // draw car
     if (carPicLoaded) {
         drawBitmapCenteredWithRotation(carPic, carX, carY, carAng);
     }
