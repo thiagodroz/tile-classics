@@ -64,7 +64,7 @@ function keyPressed(evt) {
         keyHeld_Reverse = true;
     }
 
-    //evt.preventDefault();
+    evt.preventDefault();
 }
 
 function keyReleased(evt) {
@@ -92,7 +92,7 @@ window.onload = function() {
     canvas.addEventListener('mousemove', updateMousePos);
 
     document.addEventListener('keydown', keyPressed);
-    document.addEventListener('keydown', keyReleased);
+    document.addEventListener('keyup', keyReleased);
 
     carPic.onload = function () {
         carPicLoaded = true;
@@ -113,6 +113,7 @@ function carReset() {
             var arrayIndex = rowColToArrayIndex(eachCol, eachRow);
             if (trackGrid[arrayIndex] == 2) {
                 trackGrid[arrayIndex] = 0;
+                carAng = - Math.PI / 2;
                 carX = eachCol * TRACK_W + TRACK_W / 2;
                 carY = eachRow * TRACK_H + TRACK_H / 2;
             }
@@ -121,12 +122,13 @@ function carReset() {
 }
 
 function carMove() {
-    console.log(keyHeld_Gas);
+    carSpeed *= 0.97;
+
     if (keyHeld_Gas) {
-        carSpeed += 0.2;
+        carSpeed += 0.3;
     }
     if (keyHeld_Reverse) {
-        carSpeed -= 0.2;
+        carSpeed -= 0.3;
     }
     if (keyHeld_TurnLeft) {
         carAng -= 0.04;
