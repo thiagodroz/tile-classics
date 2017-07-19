@@ -10,7 +10,21 @@ function Car() {
     this.ang = 0;
     this.speed = 0;
 
-    this.reset = function () {
+    this.keyHeld_Gas = false;
+    this.keyHeld_Reverse = false;
+    this.keyHeld_TurnLeft = false;
+    this.keyHeld_TurnRight = false;
+
+    this.setupInput = function (up, right, down, left) {
+        this.controlKeyUp = up;
+        this.controlKeyRight = right;
+        this.controlKeyDown = down;
+        this.controlKeyLeft = left;
+    };
+
+    this.reset = function (image) {
+        this.pic = image;
+
         for (var eachRow = 0; eachRow < TRACK_ROWS; eachRow++) {
             for (var eachCol = 0; eachCol < TRACK_COLS; eachCol++) {
                 var arrayIndex = rowColToArrayIndex(eachCol, eachRow);
@@ -19,6 +33,7 @@ function Car() {
                     this.ang = -Math.PI / 2;
                     this.x = eachCol * TRACK_W + TRACK_W / 2;
                     this.y = eachRow * TRACK_H + TRACK_H / 2;
+                    return;
                 }
             }
         }
@@ -27,26 +42,28 @@ function Car() {
     this.move = function () {
         this.speed *= GROUNDSPEED_DECAY_MULT;
 
-        if (keyHeld_Gas) {
+        if (this.keyHeld_Gas) {
             this.speed += DRIVE_POWER;
         }
-        if (keyHeld_Reverse) {
+        if (this.keyHeld_Reverse) {
             this.speed -= REVERSE_POWER;
         }
         if (Math.abs(this.speed) > MIN_SPEED_TO_TURN) {
-            if (keyHeld_TurnLeft) {
+            if (this.keyHeld_TurnLeft) {
                 this.ang -= TURN_RATE;
             }
-            if (keyHeld_TurnRight) {
+            if (this.keyHeld_TurnRight) {
                 this.ang += TURN_RATE;
             }
         }
 
         this.x += Math.cos(this.ang) * this.speed;
         this.y += Math.sin(this.ang) * this.speed;
+
+        carTrackHandling(this);
     };
 
     this.draw = function () {
-        drawBitmapCenteredWithRotation(carPic, this.x, this.y, this.ang);
+        drawBitmapCenteredWithRotation(this.pic, this.x, this.y, this.ang);
     };
 }

@@ -3,10 +3,10 @@ const KEY_UP_ARROW = 38;
 const KEY_RIGHT_ARROW = 39;
 const KEY_DOWN_ARROW = 40;
 
-var keyHeld_Gas = false;
-var keyHeld_Reverse = false;
-var keyHeld_TurnLeft = false;
-var keyHeld_TurnRight = false;
+const KEY_W = 87;
+const KEY_D = 68;
+const KEY_S = 83;
+const KEY_A = 65;
 
 var mouseX = 0;
 var mouseY = 0;
@@ -16,6 +16,9 @@ function setupInput () {
 
     document.addEventListener('keydown', keyPressed);
     document.addEventListener('keyup', keyReleased);
+
+    player1.setupInput(KEY_UP_ARROW, KEY_RIGHT_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW);
+    player2.setupInput(KEY_W, KEY_D, KEY_S, KEY_A);
 }
 
 function updateMousePos(evt) {
@@ -26,34 +29,29 @@ function updateMousePos(evt) {
     mouseY = evt.clientY - rect.top - root.scrollTop;
 }
 
+function keySet(evt, car, setTo) {
+    if (evt.keyCode == car.controlKeyLeft) {
+        car.keyHeld_TurnLeft = setTo;
+    }
+    if (evt.keyCode == car.controlKeyRight) {
+        car.keyHeld_TurnRight = setTo;
+    }
+    if (evt.keyCode == car.controlKeyUp) {
+        car.keyHeld_Gas = setTo;
+    }
+    if (evt.keyCode == car.controlKeyDown) {
+        car.keyHeld_Reverse = setTo;
+    }
+}
+
 function keyPressed(evt) {
-    if (evt.keyCode == KEY_LEFT_ARROW) {
-        keyHeld_TurnLeft = true;
-    }
-    if (evt.keyCode == KEY_RIGHT_ARROW) {
-        keyHeld_TurnRight = true;
-    }
-    if (evt.keyCode == KEY_UP_ARROW) {
-        keyHeld_Gas = true;
-    }
-    if (evt.keyCode == KEY_DOWN_ARROW) {
-        keyHeld_Reverse = true;
-    }
+    keySet(evt, player1, true);
+    keySet(evt, player2, true);
 
     evt.preventDefault();
 }
 
 function keyReleased(evt) {
-    if (evt.keyCode == KEY_LEFT_ARROW) {
-        keyHeld_TurnLeft = false;
-    }
-    if (evt.keyCode == KEY_RIGHT_ARROW) {
-        keyHeld_TurnRight = false;
-    }
-    if (evt.keyCode == KEY_UP_ARROW) {
-        keyHeld_Gas = false;
-    }
-    if (evt.keyCode == KEY_DOWN_ARROW) {
-        keyHeld_Reverse = false;
-    }
+    keySet(evt, player1, false);
+    keySet(evt, player2, false);
 }
