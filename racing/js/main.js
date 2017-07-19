@@ -1,5 +1,7 @@
 var canvas, canvasContext;
 
+var player1 = new Car();
+
 window.onload = function() {
     canvas = document.getElementById('gameCanvas');
     canvasContext = canvas.getContext('2d');
@@ -15,7 +17,7 @@ function imagesLoaded() {
     setInterval(updateAll, 1000/framesPerSecond);
 
     setupInput();
-    carReset();
+    player1.reset();
 }
 
 function updateAll() {
@@ -24,12 +26,12 @@ function updateAll() {
 }
 
 function moveAll() {
-    carMove();
+    player1.move();
 
-    carTrackHandling();
+    carTrackHandling(player1);
 }
 
 function drawAll() {
     drawTracks();
-    carDraw();
+    player1.draw();
 }

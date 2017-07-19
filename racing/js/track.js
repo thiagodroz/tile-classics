@@ -34,18 +34,18 @@ function isObstacleAtColRow(col, row) {
     }
 }
 
-function carTrackHandling() {
-    var carTrackCol = Math.floor(carX / TRACK_W);
-    var carTrackRow = Math.floor(carY / TRACK_H);
+function carTrackHandling(car) {
+    var carTrackCol = Math.floor(car.x / TRACK_W);
+    var carTrackRow = Math.floor(car.y / TRACK_H);
 
     if(carTrackCol >= 0 && carTrackCol < TRACK_COLS &&
         carTrackRow >= 0 && carTrackRow < TRACK_ROWS) {
 
         if(isObstacleAtColRow( carTrackCol,carTrackRow )) {
-            carX -= Math.cos(carAng) * carSpeed;
-            carY -= Math.sin(carAng) * carSpeed;
+            car.x -= Math.cos(car.ang) * car.speed;
+            car.y -= Math.sin(car.ang) * car.speed;
 
-            carSpeed *= -0.5;
+            car.speed *= -0.5;
         } // end of track found
     } // end of valid col and row
 } // end of carTrackHandling func
