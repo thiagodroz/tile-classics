@@ -3,11 +3,6 @@ const KEY_UP_ARROW = 38;
 const KEY_RIGHT_ARROW = 39;
 const KEY_DOWN_ARROW = 40;
 
-const KEY_W = 87;
-const KEY_D = 68;
-const KEY_S = 83;
-const KEY_A = 65;
-
 var mouseX = 0;
 var mouseY = 0;
 
@@ -18,7 +13,6 @@ function setupInput () {
     document.addEventListener('keyup', keyReleased);
 
     player1.setupInput(KEY_UP_ARROW, KEY_RIGHT_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW);
-    player2.setupInput(KEY_W, KEY_D, KEY_S, KEY_A);
 }
 
 function updateMousePos(evt) {
@@ -29,29 +23,27 @@ function updateMousePos(evt) {
     mouseY = evt.clientY - rect.top - root.scrollTop;
 }
 
-function keySet(evt, car, setTo) {
-    if (evt.keyCode == car.controlKeyLeft) {
-        car.keyHeld_TurnLeft = setTo;
+function keySet(evt, warrior, setTo) {
+    if (evt.keyCode == warrior.controlKeyLeft) {
+        warrior.keyHeld_TurnLeft = setTo;
     }
-    if (evt.keyCode == car.controlKeyRight) {
-        car.keyHeld_TurnRight = setTo;
+    if (evt.keyCode == warrior.controlKeyRight) {
+        warrior.keyHeld_TurnRight = setTo;
     }
-    if (evt.keyCode == car.controlKeyUp) {
-        car.keyHeld_Gas = setTo;
+    if (evt.keyCode == warrior.controlKeyUp) {
+        warrior.keyHeld_Gas = setTo;
     }
-    if (evt.keyCode == car.controlKeyDown) {
-        car.keyHeld_Reverse = setTo;
+    if (evt.keyCode == warrior.controlKeyDown) {
+        warrior.keyHeld_Reverse = setTo;
     }
 }
 
 function keyPressed(evt) {
     keySet(evt, player1, true);
-    keySet(evt, player2, true);
 
     evt.preventDefault();
 }
 
 function keyReleased(evt) {
     keySet(evt, player1, false);
-    keySet(evt, player2, false);
 }

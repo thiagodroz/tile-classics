@@ -1,8 +1,5 @@
-var blueCarPic = document.createElement("img");
-var greenCarPic = document.createElement("img");
-var trackPics = [
-
-];
+var blueWarriorPic = document.createElement("img");
+var worldPics = [];
 
 var picsToLoad = 0;
 
@@ -19,21 +16,20 @@ function beginLoadingImage(imgVar, filePath) {
     imgVar.src = filePath;
 }
 
-function loadImageForTrackCode(trackCode, filePath) {
-    trackPics[trackCode] = document.createElement("img");
-    beginLoadingImage(trackPics[trackCode], filePath);
+function loadImageForWorldCode(worldCode, filePath) {
+    worldPics[worldCode] = document.createElement("img");
+    beginLoadingImage(worldPics[worldCode], filePath);
 }
 
 function loadImages() {
     var imageList = [
-        { imgVar: blueCarPic, filePath: "./images/player1car.png" },
-        { imgVar: greenCarPic, filePath: "./images/player2car.png" },
+        { imgVar: blueWarriorPic, filePath: "./images/player1warrior.png" },
 
-        { trackType: TRACK_ROAD, filePath: "./images/track_road.png" },
-        { trackType: TRACK_WALL, filePath: "./images/track_wall.png" },
-        { trackType: TRACK_GOAL, filePath: "./images/track_goal.png" },
-        { trackType: TRACK_TREE, filePath: "./images/track_tree.png" },
-        { trackType: TRACK_FLAG, filePath: "./images/track_flag.png" }
+        { worldType: WORLD_ROAD, filePath: "./images/world_road.png" },
+        { worldType: WORLD_WALL, filePath: "./images/world_wall.png" },
+        { worldType: WORLD_GOAL, filePath: "./images/world_goal.png" },
+        { worldType: WORLD_TREE, filePath: "./images/world_tree.png" },
+        { worldType: WORLD_FLAG, filePath: "./images/world_flag.png" }
     ];
 
     picsToLoad = imageList.length;
@@ -42,7 +38,7 @@ function loadImages() {
         if (imageList[i].imgVar != undefined) {
             beginLoadingImage(imageList[i].imgVar, imageList[i].filePath);
         } else {
-            loadImageForTrackCode(imageList[i].trackType, imageList[i].filePath);
+            loadImageForWorldCode(imageList[i].worldType, imageList[i].filePath);
         }
     }
 }

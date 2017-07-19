@@ -4,13 +4,13 @@ const REVERSE_POWER = 0.2;
 const TURN_RATE = 0.06;
 const MIN_SPEED_TO_TURN = 0.5;
 
-function Car() {
+function Warrior() {
     this.x = 75;
     this.y = 75;
     this.ang = 0;
     this.speed = 0;
     this.pic = "";
-    this.name = "Unnamed car";
+    this.name = "Unnamed warrior";
 
     this.keyHeld_Gas = false;
     this.keyHeld_Reverse = false;
@@ -24,19 +24,19 @@ function Car() {
         this.controlKeyLeft = left;
     };
 
-    this.reset = function (image, carName) {
-        this.name = carName;
+    this.reset = function (image, warriorName) {
+        this.name = warriorName;
         this.pic = image;
         this.speed = 0;
 
-        for (var eachRow = 0; eachRow < TRACK_ROWS; eachRow++) {
-            for (var eachCol = 0; eachCol < TRACK_COLS; eachCol++) {
+        for (var eachRow = 0; eachRow < WORLD_ROWS; eachRow++) {
+            for (var eachCol = 0; eachCol < WORLD_COLS; eachCol++) {
                 var arrayIndex = rowColToArrayIndex(eachCol, eachRow);
-                if (trackGrid[arrayIndex] == TRACK_PLAYERSTART) {
-                    trackGrid[arrayIndex] = TRACK_ROAD;
+                if (worldGrid[arrayIndex] == WORLD_PLAYERSTART) {
+                    worldGrid[arrayIndex] = WORLD_ROAD;
                     this.ang = -Math.PI / 2;
-                    this.x = eachCol * TRACK_W + TRACK_W / 2;
-                    this.y = eachRow * TRACK_H + TRACK_H / 2;
+                    this.x = eachCol * WORLD_W + WORLD_W / 2;
+                    this.y = eachRow * WORLD_H + WORLD_H / 2;
                     return;
                 }
             }
@@ -64,7 +64,7 @@ function Car() {
         this.x += Math.cos(this.ang) * this.speed;
         this.y += Math.sin(this.ang) * this.speed;
 
-        carTrackHandling(this);
+        warriorWorldHandling(this);
     };
 
     this.draw = function () {

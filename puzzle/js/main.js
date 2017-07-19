@@ -1,7 +1,6 @@
 var canvas, canvasContext;
 
-var player1 = new Car();
-var player2 = new Car();
+var player1 = new Warrior();
 
 window.onload = function() {
     canvas = document.getElementById('gameCanvas');
@@ -23,9 +22,8 @@ function imagesLoaded() {
 }
 
 function loadLevel(level) {
-    trackGrid = level.slice();
-    player1.reset(blueCarPic, "Blue Storm");
-    player2.reset(greenCarPic, "Green Machine");
+    worldGrid = level.slice();
+    player1.reset(blueWarriorPic, "Blue Storm");
 }
 
 function updateAll() {
@@ -35,11 +33,9 @@ function updateAll() {
 
 function moveAll() {
     player1.move();
-    player2.move();
 }
 
 function drawAll() {
-    drawTracks();
+    drawWorlds();
     player1.draw();
-    player2.draw();
 }
