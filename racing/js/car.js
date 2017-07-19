@@ -9,6 +9,8 @@ function Car() {
     this.y = 75;
     this.ang = 0;
     this.speed = 0;
+    this.pic = "";
+    this.name = "Unnamed car";
 
     this.keyHeld_Gas = false;
     this.keyHeld_Reverse = false;
@@ -22,8 +24,10 @@ function Car() {
         this.controlKeyLeft = left;
     };
 
-    this.reset = function (image) {
+    this.reset = function (image, carName) {
+        this.name = carName;
         this.pic = image;
+        this.speed = 0;
 
         for (var eachRow = 0; eachRow < TRACK_ROWS; eachRow++) {
             for (var eachCol = 0; eachCol < TRACK_COLS; eachCol++) {

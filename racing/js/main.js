@@ -18,8 +18,14 @@ function imagesLoaded() {
     setInterval(updateAll, 1000/framesPerSecond);
 
     setupInput();
-    player1.reset(blueCarPic);
-    player2.reset(greenCarPic);
+
+    loadLevel(levelOne);
+}
+
+function loadLevel(level) {
+    trackGrid = level.slice();
+    player1.reset(blueCarPic, "Blue Storm");
+    player2.reset(greenCarPic, "Green Machine");
 }
 
 function updateAll() {
