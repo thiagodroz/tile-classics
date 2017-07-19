@@ -19,7 +19,7 @@ function imagesLoaded() {
 
     setupInput();
 
-    loadLevel(levelOne);
+    loadLevel(levelList[0]);
 }
 
 function loadLevel(level) {
