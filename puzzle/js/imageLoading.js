@@ -23,13 +23,13 @@ function loadImageForWorldCode(worldCode, filePath) {
 
 function loadImages() {
     var imageList = [
-        { imgVar: blueWarriorPic, filePath: "./images/player1warrior.png" },
+        { imgVar: blueWarriorPic, filePath: "./images/warrior.png" },
 
-        { worldType: WORLD_ROAD, filePath: "./images/world_road.png" },
-        { worldType: WORLD_WALL, filePath: "./images/world_wall.png" },
-        { worldType: WORLD_GOAL, filePath: "./images/world_goal.png" },
-        { worldType: WORLD_TREE, filePath: "./images/world_tree.png" },
-        { worldType: WORLD_FLAG, filePath: "./images/world_flag.png" }
+        { worldType: TILE_GROUND, filePath: "./images/tile_ground.png" },
+        { worldType: TILE_WALL, filePath: "./images/tile_wall.png" },
+        { worldType: TILE_GOAL, filePath: "./images/tile_goal.png" },
+        { worldType: TILE_KEY, filePath: "./images/tile_key.png" },
+        { worldType: TILE_DOOR, filePath: "./images/tile_door.png" }
     ];
 
     picsToLoad = imageList.length;

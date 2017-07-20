@@ -1,18 +1,24 @@
-const WORLD_W = 40;
-const WORLD_H = 40;
-const WORLD_COLS = 20;
-const WORLD_ROWS = 15;
+const WORLD_W = 50;
+const WORLD_H = 50;
+const WORLD_COLS = 16;
+const WORLD_ROWS = 12;
 
 var levelList = [levelOne];
 var currentLevel = 0;
 var worldGrid = [];
 
-const WORLD_ROAD = 0;
-const WORLD_WALL = 1;
-const WORLD_PLAYERSTART = 2;
-const WORLD_GOAL = 3;
-const WORLD_TREE = 4;
-const WORLD_FLAG = 5;
+const TILE_GROUND = 0;
+const TILE_WALL = 1;
+const TILE_PLAYERSTART = 2;
+const TILE_GOAL = 3;
+const TILE_KEY = 4;
+const TILE_DOOR = 5;
+
+function tileTypeHasTransparency(tile) {
+    return (tile == TILE_DOOR ||
+            tile == TILE_GOAL ||
+            tile == TILE_KEY);
+}
 
 function returnTileTypeAtColRow(col, row) {
     if(col >= 0 && col < WORLD_COLS &&
@@ -20,29 +26,9 @@ function returnTileTypeAtColRow(col, row) {
         var worldIndexUnderCoord = rowColToArrayIndex(col, row);
         return worldGrid[worldIndexUnderCoord];
     } else {
-        return WORLD_WALL;
+        return TILE_WALL;
     }
 }
-
-function warriorWorldHandling(warrior) {
-    var warriorWorldCol = Math.floor(warrior.x / WORLD_W);
-    var warriorWorldRow = Math.floor(warrior.y / WORLD_H);
-
-    if(warriorWorldCol >= 0 && warriorWorldCol < WORLD_COLS &&
-        warriorWorldRow >= 0 && warriorWorldRow < WORLD_ROWS) {
-        var tile = returnTileTypeAtColRow(warriorWorldCol, warriorWorldRow);
-
-        if(tile == WORLD_GOAL) {
-            currentLevel++;
-            loadLevel(levelList[currentLevel]);
-        } else if (tile != WORLD_ROAD) {
-            warrior.x -= Math.cos(warrior.ang) * warrior.speed;
-            warrior.y -= Math.sin(warrior.ang) * warrior.speed;
-
-            warrior.speed *= -0.5;
-        } // end of world found
-    } // end of valid col and row
-} // end of warriorWorldHandling func
 
 function rowColToArrayIndex(col, row) {
     return col + WORLD_COLS * row;
@@ -55,6 +41,9 @@ function drawWorlds() {
     for(var eachRow=0;eachRow<WORLD_ROWS;eachRow++) {
         for(var eachCol=0;eachCol<WORLD_COLS;eachCol++) {
             var tileKind = worldGrid[arrayIndex];
+            if (tileTypeHasTransparency(tileKind)) {
+                canvasContext.drawImage(worldPics[TILE_GROUND], drawTileX, drawTileY);
+            }
             var useImg = worldPics[tileKind];
             canvasContext.drawImage(useImg, drawTileX, drawTileY);
             drawTileX += WORLD_W;
