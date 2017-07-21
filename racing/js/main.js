@@ -20,6 +20,8 @@ function imagesLoaded() {
     setupInput();
 
     loadLevel(levelList[0]);
+
+    playMusic();
 }
 
 function loadLevel(level) {
@@ -42,4 +44,8 @@ function drawAll() {
     drawTracks();
     player1.draw();
     player2.draw();
+}
+
+function playMusic() {
+    document.getElementById("soundEfx").play();
 }
