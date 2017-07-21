@@ -22,6 +22,8 @@ function Warrior() {
         this.name = warriorName;
         this.pic = image;
 
+        this.keys = 0;
+
         for (var eachRow = 0; eachRow < WORLD_ROWS; eachRow++) {
             for (var eachCol = 0; eachCol < WORLD_COLS; eachCol++) {
                 var arrayIndex = rowColToArrayIndex(eachCol, eachRow);
@@ -58,8 +60,17 @@ function Warrior() {
         if(warriorWorldCol >= 0 && warriorWorldCol < WORLD_COLS &&
             warriorWorldRow >= 0 && warriorWorldRow < WORLD_ROWS) {
             var tile = returnTileTypeAtColRow(warriorWorldCol, warriorWorldRow);
+            var arrayIndex = rowColToArrayIndex(warriorWorldCol, warriorWorldRow);
 
-            if (tile != TILE_GROUND) {
+            if (tile == TILE_KEY) {
+                worldGrid[arrayIndex] = TILE_GROUND;
+                this.keys++;
+            } else if (tile == TILE_DOOR && this.keys > 0) {
+                worldGrid[arrayIndex] = TILE_GROUND;
+                this.keys--;
+            } else if (tile == TILE_GOAL) {
+                loadLevel();
+            } else if (tile != TILE_GROUND) {
                 this.x = previousX;
                 this.y = previousY;
             }

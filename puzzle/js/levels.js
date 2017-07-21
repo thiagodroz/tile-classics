@@ -10,10 +10,3 @@ const levelOne = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                   1, 0, 5, 0, 5, 0, 5, 0, 3, 0, 1, 1, 1, 1, 1, 1,
                   1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1,
                   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
-
-// const TILE_GROUND = 0;
-// const TILE_WALL = 1;
-// const TILE_PLAYERSTART = 2;
-// const TILE_GOAL = 3;
-// const TILE_KEY = 4;
-// const TILE_DOOR = 5;
